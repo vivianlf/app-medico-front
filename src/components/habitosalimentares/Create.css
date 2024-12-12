@@ -1,74 +1,154 @@
-.create-container {
-  width: 100%;
-  max-width: 400px;
-  background-color: #f9f9f9;
-  border: 3px solid #d31313;
-  border-radius: 10px;
-  margin: 20px auto;
-  padding: 15px;
-  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.domain-title {
-  text-align: center;
-  margin-bottom: 20px;
-  font-family: 'Arial', sans-serif;
-  font-size: 1.5rem;
-  color: #333333;
-}
-
-input[type="text"] {
-  width: 100%;
-  margin-bottom: 15px;
-  padding: 10px;
-  font-size: 1rem;
-  border: 2px solid #ddd;
-  border-radius: 5px;
-  box-sizing: border-box;
-}
-
-label {
+/* Barra de navegação */
+.navbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin: 10px 0;
-  font-size: 1rem;
-  color: #444444;
-  font-family: 'Arial', sans-serif;
+  margin-bottom: 20px;
 }
 
-input[type="checkbox"] {
-  transform: scale(1.3);
-  margin-left: 10px;
+.limpar-dados {
+  color: #f44336; /* Vermelho para destacar o texto */
   cursor: pointer;
+  text-decoration: underline;
+  font-size: 1rem;
+  margin-top: 20px;
+  transition: color 0.3s ease;
 }
 
-button {
-  display: block;
-  width: 100%;
-  padding: 10px 0;
-  margin: 10px 0;
-  background-color: #007BFF;
-  color: #fff;
+/* Efeito hover para interação */
+.limpar-dados:hover {
+  color: #d32f2f; /* Vermelho mais escuro no hover */
+}
+
+.exit-button {
+  background: none;
   border: none;
-  border-radius: 5px;
-  font-size: 1rem;
-  font-family: 'Arial', sans-serif;
+  color: #007bff;
   cursor: pointer;
+  font-size: 0.9rem;
+  text-decoration: underline;
+}
+
+.progress-bar {
+  display: flex;
+  gap: 5px;
+}
+
+.progress-step {
+  width: 20px;
+  height: 5px;
+  background-color: #e0e0e0;
+  border-radius: 3px;
   transition: background-color 0.3s ease;
 }
 
-button:hover {
+.progress-step.active {
+  background-color: #007bff;
+}
+
+/* Estilo existente */
+.questionario-container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  max-width: 500px;
+  margin: 50px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Estilo base dos botões */
+.btn-sim, .btn-nao {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+  color: white; /* Mantém o texto legível */
+}
+
+/* Botão SIM ativo */
+.btn-sim.active {
+  background-color: #4caf50; /* Verde */
+  border: 1px solid #388e3c;
+}
+
+/* Botão NÃO ativo */
+.btn-nao.active {
+  background-color: #f44336; /* Vermelho */
+  border: 1px solid #d32f2f;
+}
+
+/* Estilo padrão para os botões inativos */
+.btn-sim, .btn-nao {
+  background-color: #e0e0e0; /* Cinza claro */
+  border: 1px solid #ccc;
+  color: #000; /* Texto em preto para botões inativos */
+}
+
+/* Hover para botões inativos (quando não estão ativos) */
+.btn-sim:not(.active):hover {
+  background-color: #45a049; /* Verde mais forte */
+}
+
+.btn-nao:not(.active):hover {
+  background-color: #e53935; /* Vermelho mais forte */
+}
+
+/* Transição suave ao clicar */
+.btn-sim.active, .btn-nao.active {
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.paciente-id-container{
+  margin: 10px;
+
+}
+.domain-title{
+  margin: 20px;
+}
+
+.navigation-container {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.btn-navegacao {
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.btn-navegacao:disabled {
+  background-color: #d6d6d6;
+  cursor: not-allowed;
+}
+
+.btn-navegacao:hover:not(:disabled) {
   background-color: #0056b3;
 }
 
-button:active {
-  background-color: #004080;
+.icon-container {
+  text-align: center;
+  margin-top: 20px;
 }
 
-p {
-  text-align: center;
-  color: green;
-  font-size: 0.9rem;
-  font-family: 'Arial', sans-serif;
+.habitos-icon {
+  width: 200px; 
+  height: auto;
 }

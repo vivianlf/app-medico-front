@@ -3,7 +3,7 @@ import './Create.css';
 import Axios from 'axios';
 import habitosIcon from '../../assets/habitosicon.png';
 
-function Create(props) {
+function Update(props) {
   const [values, setValues] = useState({
     pacienteId: '',
     compulsaoAlimentar: false,
@@ -41,7 +41,7 @@ function Create(props) {
     if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
     } else {
-      clickCreate();
+      clickUpdate();
     }
   };
 
@@ -51,30 +51,42 @@ function Create(props) {
     }
   };
 
-
-
-  const clickCreate = async () => {
+ const clickGet = async () => {
     try {
-      const response = await Axios.post(`http://localhost:3000/habitosalimentares/${Number(values.pacienteId)}`, {
-        pacienteId: Number(values.pacienteId),
-        compulsaoAlimentar: values.compulsaoAlimentar,
-        gostaDocesAlcool: values.gostaDocesAlcool,
-        fomeNoturna: values.fomeNoturna,
-        fomeEmocional: values.fomeEmocional,
-        habitoBeliscador: values.habitoBeliscador,
-      });
+        const response = await Axios.get(`http://localhost:3000/habitosalimentares/${encodeURIComponent(Number(values.pacienteId))}`);
 
-      props.setListDomain((prevListDomain) => [...prevListDomain, response.data]);
-      setMessage('Hábito alimentar criado com sucesso!');
-    } catch (error) {
-      console.log(error);
-      if (error.response && error.response.data) {
-        setMessage('Erro ao criar hábito alimentar: ' + JSON.stringify(error.response.data));
+      console.log("resposta:", response);
+  
+      // Verifica se há dados retornados no array
+      if (response.data.length > 0) {
+        const habito = response.data[0]; // Obtém o primeiro hábito do array
+        setValues({
+          pacienteId: habito.pacienteId,
+          compulsaoAlimentar: habito.compulsaoAlimentar,
+          gostaDocesAlcool: habito.gostaDocesAlcool,
+          fomeNoturna: habito.fomeNoturna,
+          fomeEmocional: habito.fomeEmocional,
+          habitoBeliscador: habito.habitoBeliscador,
+        });
+  
+        setMessage('Dados do hábito alimentar carregados com sucesso!');
+        console.log('Hábito alimentar carregado:', habito);
+        return habito; // Retorna o JSON com os dados
       } else {
-        setMessage('Erro ao criar hábito alimentar: ' + error.message);
+        setMessage('Nenhum hábito alimentar encontrado para o paciente.');
+      }
+    } catch (error) {
+      console.log('Erro ao buscar hábito alimentar:', error);
+      if (error.response && error.response.status === 404) {
+        setMessage('Nenhum hábito alimentar encontrado para o paciente.');
+      } else if (error.response && error.response.data) {
+        setMessage('Erro ao buscar hábito alimentar: ' + JSON.stringify(error.response.data));
+      } else {
+        setMessage('Erro ao buscar hábito alimentar: ' + error.message);
       }
     }
   };
+  
 
   const clickRemove = async () => {
     try {
@@ -118,10 +130,16 @@ function Create(props) {
     }
   };
 
-  const handleCaptureId = () => {
+  const handleCaptureId = async () => {
+    if (!values.pacienteId) {
+      alert('Por favor, insira um ID válido antes de capturar.');
+      return;
+    }
+  
     console.log('ID Capturado:', values.pacienteId);
     alert(`ID Capturado: ${values.pacienteId}`);
-    // Aqui você pode implementar qualquer outra lógica para capturar o ID do paciente
+  
+    await clickGet();
   };
 
   return (
@@ -145,7 +163,7 @@ function Create(props) {
           Capturar
         </button>
       </div>
-      <h1 className="domain-title">Cadastro de Hábitos Alimentares</h1>
+      <h1 className="domain-title">Atualizar Hábitos Alimentares</h1>
 
 
       {currentQuestion < questions.length ? (
@@ -168,7 +186,7 @@ function Create(props) {
           </div>
         </>
       ) : (
-        <button onClick={clickCreate} className="btn-save">
+        <button onClick={clickUpdate} className="btn-save">
           Salvar
         </button>
       )}
@@ -194,9 +212,19 @@ function Create(props) {
 
       </div>
 
+      <div className="button-container">
+          <p
+            onClick={clickRemove}
+            className="limpar-dados"
+          >
+            Limpar meus dados
+          </p>
+
+        </div>
+
       {message && <p className="message">{message}</p>}
     </div>
   );
 }
 
-export default Create;
+export default Update;
