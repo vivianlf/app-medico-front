@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import './List.css';
-import Axios from 'axios';
-import Card from './Card';
+import React, { useState } from 'react';
 import Create from './Create';
 
-function List() {
+const ListSono = () => {
   const [listDomain, setListDomain] = useState([]);
-  
+
+  // Remova ou comente o código relacionado à requisição GET
+  /*
   useEffect(() => {
-    Axios.get('http://localhost:3000/sono/all')
+    Axios.get('http://localhost:3000/sono')
       .then(function (response) {
         setListDomain(response.data);
       })
@@ -16,28 +15,20 @@ function List() {
         console.log(error.response.data);
       });
   }, []);
+  */
 
   return (
     <div className='list-container'>
       <Create listDomain={listDomain} setListDomain={setListDomain} />
-      {listDomain.length > 0 &&
-        listDomain.map((value) => {
-          return (
-            <Card
-              key={value.id}
-              qualidadeSono={value.qualidadeSono}
-              horarioSono={value.horarioSono}
-              inducaoSono={value.inducaoSono}
-              manutencaoSono={value.manutencaoSono}
-              despertarSono={value.despertarSono}
-              dormeBem={value.dormeBem}
-              listDomain={listDomain}
-              setListDomain={setListDomain}
-            />
-          );
-        })}
+      {listDomain.length > 0 && (
+        <ul>
+          {listDomain.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
-}
+};
 
-export default List;
+export default ListSono;

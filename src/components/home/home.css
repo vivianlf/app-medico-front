@@ -1,5 +1,6 @@
 /* Centralizar todo o conteúdo */
 .home-container {
+  width: 100%;
     display: flex;
     flex-direction: column; /* Elementos empilhados verticalmente */
     align-items: center; /* Centralizar horizontalmente */

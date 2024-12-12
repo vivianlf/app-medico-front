@@ -22,6 +22,12 @@ const Home = () => {
         >
           Atualizar Hábitos Alimentares
         </button>
+        <button
+          className="btn-navegacao"
+          onClick={() => navigate('/sono')}
+        >
+          Sono
+        </button>
       </div>
     </div>
   );

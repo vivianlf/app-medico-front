@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './List.css';
+import './ListHabitos.css';
 import Axios from 'axios';
 import Card from './Card';
 import Create from './Create';

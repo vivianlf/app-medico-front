@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './List.css';
+import './ListHabitos.css';
 import Card from './Card';
 import Update from './Update';
 

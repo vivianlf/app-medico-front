@@ -25,8 +25,8 @@ function Create(props) {
 
   const clickCreate = async () => {
     try {
-      const response = await Axios.post('http://localhost:3000/sono', {
-        pacienteId: Number(values.pacienteId), // Convertendo para número
+      const response = await Axios.post(`http://localhost:3000/sono/${Number(values.pacienteId)}`, {
+        pacienteId: Number(values.pacienteId),
         qualidadeSono: values.qualidadeSono,
         horarioSono: values.horarioSono,
         inducaoSono: values.inducaoSono,
@@ -50,12 +50,11 @@ function Create(props) {
   const clickRemove = async () => {
     try {
       const pacienteId = Number(values.pacienteId);
-      console.log('Deleting sono with pacienteId:', pacienteId); 
       await Axios.delete(`http://localhost:3000/sono/${pacienteId}`);
       props.setListDomain(
         props.listDomain.filter((value) => value.pacienteId !== pacienteId)
       );
-      setMessage('Sono deletados com sucesso!');
+      setMessage('Sono deletado com sucesso!');
     } catch (error) {
       console.log('Erro ao deletar sono:', error);
       if (error.response && error.response.data) {
@@ -69,7 +68,7 @@ function Create(props) {
   const clickUpdate = async () => {
     try {
       const response = await Axios.put(`http://localhost:3000/sono/${Number(values.pacienteId)}`, {
-        pacienteId: Number(values.pacienteId), // Convertendo para número
+        pacienteId: Number(values.pacienteId),
         qualidadeSono: values.qualidadeSono,
         horarioSono: values.horarioSono,
         inducaoSono: values.inducaoSono,
@@ -97,65 +96,103 @@ function Create(props) {
     }
   };
 
+  const clickGetDados = async () => {
+    try {
+      const response = await Axios.get(`http://localhost:3000/sono/${encodeURIComponent(Number(values.pacienteId))}`);
+      const dados = response.data[0];
+      setValues({
+        pacienteId: Number(dados.pacienteId),
+        qualidadeSono: dados.qualidadeSono,
+        horarioSono: dados.horarioSono,
+        inducaoSono: dados.inducaoSono,
+        manutencaoSono: dados.manutencaoSono,
+        despertarSono: dados.despertarSono,
+        dormeBem: dados.dormeBem, // Adicione uma vírgula aqui
+      });         
+      setMessage('Dados do paciente obtidos com sucesso!', values);
+    } catch (error) {
+      console.log('Erro ao buscar dados do paciente:', error);
+      if (error.response && error.response.data) {
+        setMessage('Erro ao buscar dados do paciente: ' + JSON.stringify(error.response.data));
+      } else {
+        setMessage('Erro ao buscar dados do paciente: ' + error.message);
+      }
+    }
+};
+
   return (
     <div className='create-container'>
-      <h1 className='domain-title'>Cadastro de Sono</h1>
+      <h1 className='domain-title'>Meu Sono</h1>
       <form onSubmit={(e) => { e.preventDefault(); clickCreate(); }}>
+        <label>ID do Paciente:</label>
         <input
           type="text"
           name="pacienteId"
           value={values.pacienteId}
           onChange={handleChange}
-          placeholder="ID do Paciente"
+          placeholder={values.pacienteId || "Digite o ID do Paciente"}
         />
+
+        <label>Qualidade do Sono:</label>
         <input
           type="text"
           name="qualidadeSono"
           value={values.qualidadeSono}
           onChange={handleChange}
-          placeholder="Qualidade do Sono"
+          placeholder={values.qualidadeSono || "Como está a qualidade do sono?"}
         />
+
+        <label>Horário do Sono:</label>
         <input
           type="text"
           name="horarioSono"
           value={values.horarioSono}
           onChange={handleChange}
-          placeholder="Horário do Sono"
+          placeholder={values.horarioSono || "Informe o horário do sono"}
         />
+
+        <label>Indução do Sono:</label>
         <input
           type="text"
           name="inducaoSono"
           value={values.inducaoSono}
           onChange={handleChange}
-          placeholder="Indução do Sono"
+          placeholder={values.inducaoSono || "Como ocorre a indução do sono?"}
         />
+
+        <label>Manutenção do Sono:</label>
         <input
           type="text"
           name="manutencaoSono"
           value={values.manutencaoSono}
           onChange={handleChange}
-          placeholder="Manutenção do Sono"
+          placeholder={values.manutencaoSono || "Informe sobre a manutenção do sono"}
         />
+
+        <label>Despertar do Sono:</label>
         <input
           type="text"
           name="despertarSono"
           value={values.despertarSono}
           onChange={handleChange}
-          placeholder="Despertar do Sono"
+          placeholder={values.despertarSono || "Como é o despertar do sono?"}
         />
+
         <label>
           Dificuldade para Dormir:
           <input
             type="checkbox"
             name="dormeBem"
-            checked={values.dificuldadeDormir}
+            checked={values.dormeBem}
             onChange={handleChange}
           />
         </label>
+
         <button type="submit">Criar Registro de Sono</button>
       </form>
-      <button onClick={clickRemove}>Limpar Sono</button>
-      <button onClick={clickUpdate}>Atualizar Sono</button>
+      <button onClick={clickRemove}>Deletar Registro de Sono</button>
+      <button onClick={clickUpdate}>Atualizar Registro de Sono</button>
+      <button onClick={clickGetDados}>Buscar Dados do Paciente</button>
       {message && <p>{message}</p>}
     </div>
   );
